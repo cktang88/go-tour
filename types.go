@@ -82,7 +82,6 @@ func main() {
 			{13, true},
 		}
 		fmt.Println(s)
-		// for more on slices: https://blog.golang.org/go-slices-usage-and-internals
 	}
 	{
 		s := []int{2, 3, 5, 7, 11, 13}
@@ -108,7 +107,59 @@ func main() {
 			fmt.Println("nil!")
 		}
 	}
+	{
+		// allocates a zeroed array and returns a slice referring to it
+		a := make([]int, 5) // len(a)=5
+		// specifying capacity, allows making dynamically-sized arrays
+		b := make([]int, 0, 5) // len(b)=0, cap(b)=5
 
+		printSlice(a)
+		printSlice(b)
+		// NOTE: slices can contain any time, even other slices
+	}
+	{
+		/* appending to slices */
+		var s []int
+		// append works on nil slices.
+		s = append(s, 0)
+		// The slice grows as needed.
+		s = append(s, 1)
+		// We can add more than one element at a time.
+		s = append(s, 2, 3, 4)
+		printSlice(s)
+		// slices always return the new slice
+
+		/* If the backing array of s is too small, a bigger array will be allocated.
+		The returned slice will point to the newly allocated array.
+		*/
+	}
+
+	// for more on slices: https://blog.golang.org/go-slices-usage-and-internals
+	{
+		// RANGE - returns index & value
+		pow := make([]int, 4)
+		for i := range pow {
+			pow[i] = 1 << uint(i) // == 2**i
+		}
+		// ignore either var by assigning to _
+		for _, value := range pow {
+			fmt.Printf("%d\n", value)
+			// fmt.Printf(_) // err: cannot use _ as value
+		}
+	}
+	{
+		// eg. working with array of arrays
+		var ss [][]uint8
+		for j := 0; j < dy; j++ {
+			var s []uint8
+			for i := 0; i < dx; i++ {
+				b := i ^ j
+				s = append(s, uint8(b))
+			}
+			ss = append(ss, s)
+		}
+		return ss
+	}
 }
 
 /*
