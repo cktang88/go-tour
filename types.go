@@ -93,7 +93,7 @@ func main() {
 		printSlice(s)
 
 		// extend slice length (see function def below)
-		s = extendSliceHandler(s, 4); // should throw (& exit gracefully) if 2nd param > 6
+		s = extendSliceHandler(s, 4) // should throw (& exit gracefully) if 2nd param > 6
 		printSlice(s)
 
 		// Drop its first two values.
@@ -110,11 +110,12 @@ func main() {
 	}
 
 }
+
 /*
 Extend its length (assuming sufficient capacity)
 If insufficient capacity, will PANIC - then use https://golang.org/doc/effective_go.html#recover
 */
-func extendSliceHandler(s []int, newLength int)(newSlice []int){
+func extendSliceHandler(s []int, newLength int) (newSlice []int) {
 	defer func() {
 		// recovering from Panic when slice creation fails
 		if err := recover(); err != nil {
@@ -124,6 +125,7 @@ func extendSliceHandler(s []int, newLength int)(newSlice []int){
 	}()
 	return s[:newLength]
 }
+
 /*
 Print slices nicely
 */
