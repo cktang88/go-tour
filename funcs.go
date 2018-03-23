@@ -35,7 +35,7 @@ func compute(fn func(float64, float64) float64) float64 {
 	return fn(3, 4)
 }
 
-func main2() {
+func compute_test() {
 	hypot := func(x, y float64) float64 {
 		return math.Sqrt(x*x + y*y)
 	}
@@ -60,7 +60,7 @@ func adder() func(int) int {
 	}
 }
 
-func main3() {
+func adder_test() {
 	pos, neg := adder(), adder()
 	for i := 0; i < 10; i++ {
 		fmt.Println(
@@ -90,9 +90,58 @@ func fibonacci() func() int {
 	}
 }
 
-func main4() {
+func fib_test() {
 	f := fibonacci()
 	for i := 0; i < 10; i++ {
 		fmt.Println(f())
 	}
+}
+
+/* NO CLASSES. But can define METHODS on types.
+A method is a function with a special RECEIVER argument.
+*/
+type Vertex struct {
+	X, Y float64
+}
+
+/* RECEIVER (eg. Vertex) is right before func name (eg. Abs)
+
+func sig similar to regular "func Abs(v Vertex) float64 {", except more convenient usage
+*/
+func (v Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func abs_test() {
+	v := Vertex{3, 4}
+	// so now method can kind of be used like method of a class
+	fmt.Println(v.Abs())
+}
+
+/* NOTE: Can also define methods on non-struct types
+eg.
+type MyFloat float64
+func (f MyFloat) Abs() float64 {...}
+
+Usage: f.Abs()
+
+*** Only works if receiver type is declared in same package as method
+*/
+
+/* Pointer receivers
+
+Can be called with regular Vertex v, eg. (v.Scale) gets auto converted to (&v).Scale
+*/
+func (v *Vertex) Scale(f float64) {
+	// can modify receiver
+}
+
+/* Therefore, cannot declare below, b/c would be interpreted as SAME method as above ptr method
+
+func (v Vertex) Scale(f float64) {
+}
+*/
+func ptr_method_test() {
+	v := Vertex{3, 4}
+	v.Scale(.5)
 }
