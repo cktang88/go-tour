@@ -4,10 +4,15 @@ Types: structs, arrays, slices, and maps.
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 func main() {
-	// POINTERS (C-like syntax), but NO POINTER ARITHMETIC
+	/*
+	 * 	POINTERS (C-like syntax), but NO POINTER ARITHMETIC
+	 */
 	i, j := 42, 2701
 
 	p := &i         // point to i
@@ -19,7 +24,10 @@ func main() {
 	*p = *p / 37   // divide j through the pointer
 	fmt.Println(j) // see the new value of j
 
-	// structs
+	/*
+	 * 	STRUCTS
+	 */
+
 	type Vertex struct {
 		X int
 		Y int
@@ -43,6 +51,11 @@ func main() {
 		v4 := &Vertex{1, 2} // has type *Vertex
 		fmt.Println(v1, v2, v3, v4)
 	}
+
+	/*
+	 * 	SLICES
+	 */
+
 	{
 		// arrays
 		var a [2]string
@@ -150,6 +163,7 @@ func main() {
 	{
 		// eg. working with array of arrays
 		var ss [][]uint8
+		var dx, dy int
 		for j := 0; j < dy; j++ {
 			var s []uint8
 			for i := 0; i < dx; i++ {
@@ -158,8 +172,69 @@ func main() {
 			}
 			ss = append(ss, s)
 		}
-		return ss
 	}
+
+	/*
+	 * 	MAPS
+	 */
+
+	{
+		// maps
+		// zero value of a map is nil
+		type Vertex struct {
+			Lat, Long float64
+		}
+		m := make(map[string]Vertex)
+		m["Bell Labs"] = Vertex{
+			40.68433, -74.39967,
+		}
+		fmt.Println(m["Bell Labs"])
+
+		// map literals
+		var ml = map[string]Vertex{
+			"Bell Labs": Vertex{
+				40.68433, -74.39967,
+			},
+			"Google": Vertex{
+				37.42202, -122.08408,
+			},
+		}
+		// can also just remove type name altogether
+		var ml2 = map[string]Vertex{
+			"Bell Labs": {40.68433, -74.39967},
+			"Google":    {37.42202, -122.08408},
+		}
+
+		fmt.Println(ml["Google"])
+
+		/* use argument destructuring to check if key exists
+		If key not in map, elem is zero value of type
+		*/
+		elem, keyIsInMap := ml2["badkey"]
+		fmt.Println(keyIsInMap, elem)
+	}
+	{
+		// map exercise
+		fmt.Println(WordCount("I am not a tiger, but I will become a tiger"))
+	}
+}
+
+/*
+Map Exercise
+Keep track of all words and how many times they appear in a string.
+*/
+func WordCount(s string) map[string]int {
+	m := make(map[string]int)
+	words := strings.Fields(s)
+	for i := range words {
+		x := words[i]
+		_, inMap := m[x]
+		if !inMap {
+			m[x] = 0
+		}
+		m[x] = m[x] + 1
+	}
+	return m
 }
 
 /*
