@@ -150,27 +150,3 @@ func ptr_method_test() {
 NOTE:
 All methods on a given type should have EITHER value or pointer receivers, but not a mixture of both
 */
-
-/*
- * 	INTERFACES - implemented implicitely
-
- Implicit interfaces decouple the definition of an interface from its implementation,
- which could then appear in any package without prearrangement.
-
- Some advantages of implicit interfaces:
- https://softwareengineering.stackexchange.com/questions/197356/how-does-go-improve-productivity-with-implicit-interfaces-and-how-does-that-c
-*/
-
-type I interface {
-	M()
-}
-
-type T struct {
-	S string
-}
-
-// So type T implements the interface I,
-// but we don't need to explicitly declare that it does so.
-func (t T) M() {
-	fmt.Println(t.S)
-}
