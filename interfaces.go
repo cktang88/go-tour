@@ -6,8 +6,9 @@ package main
 
 import (
 	"fmt"
-	// "strings"
+	"strings"
 	"strconv"
+	"io"
 )
 
 /*
@@ -27,10 +28,6 @@ import (
  An interface value holds a value of a specific underlying concrete type.
  Calling a method on an interface value executes the method of the same name on its underlying type.
 */
-
-func main(){
-
-}
 
 type I interface {
 	M()
@@ -119,11 +116,36 @@ func handleError() {
 	}
 	fmt.Println("Converted integer:", i)
 }
+
 /*
 io.Reader interface
-Description: read end of a stream of data. 
+Description:
+read end of a stream of data.
+
 Go standard library contains many implementations,
-including files, network connections, compressors, ciphers, and others. 
+including files, network connections, compressors, ciphers, and others.
+
+populates the given byte slice with data
+returns the # bytes populated, err val. It returns an io.EOF error when the stream ends.
 
 func (T) Read(b []byte) (n int, err error)
 */
+
+func main() {
+	r := strings.NewReader("Hello, Reader!")
+
+	// consumes max 8 bytes at a time
+	b := make([]byte, 8)
+	// inf loop
+	for {
+		n, err := r.Read(b)
+		fmt.Printf("n = %v err = %v b = %v\n", n, err, b)
+		fmt.Printf("b[:n] = %q\n", b[:n])
+		if err == io.EOF {
+			break
+		}
+	}
+}
+
+/* By adding Read([]byte) (int, error) to a type, 
+you can meka a stream that emits anything */
