@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"runtime"
 	"time"
@@ -46,6 +47,29 @@ func main() {
 			for {
 			}
 		*/
+	}
+	{
+		// exercise
+		func Sqrt(x float64) float64 {
+			z := x/(math.Pow(2, math.Log(x)-2))
+			dz := z
+			for math.Abs(dz) > .0001 {
+				oldz := z
+				fmt.Println(z)
+				z -= (z*z - x) / (2*z)
+				dz = z - oldz
+			}
+			return z
+		}
+
+		func main() {
+			//fmt.Println(Sqrt(2))
+			//fmt.Println(Sqrt(20))
+			//fmt.Println(Sqrt(200))
+			//fmt.Println(Sqrt(2000))
+			fmt.Println(Sqrt(20000))
+		}
+
 	}
 	{
 		// switch
